@@ -5,6 +5,7 @@ import TodoList from './TodoList';
 import Calendar from './Calendar';
 import Diary from './Diary';
 import Translator from './Translator';
+import Board from './Board';
 import { LayoutDashboard, Calculator as CalcIcon, CheckSquare, Calendar as CalIcon, Book, Languages, Menu } from 'lucide-react';
 
 import { useAuth } from '../context/AuthContext';
@@ -66,6 +67,11 @@ function Dashboard() {
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
+                  <Nav.Link eventKey="board" className="d-flex align-items-center gap-2">
+                    <Clipboard size={16} /> Board
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
                   <Button variant="link" className="nav-link text-danger" onClick={handleLogout}>
                     Logout
                   </Button>
@@ -124,6 +130,13 @@ function Dashboard() {
                 <Row className="justify-content-center">
                   <Col md={8} lg={6}>
                     <Translator />
+                  </Col>
+                </Row>
+              </Tab.Pane>
+              <Tab.Pane eventKey="board">
+                <Row className="justify-content-center">
+                  <Col md={10} lg={8}>
+                    <Board />
                   </Col>
                 </Row>
               </Tab.Pane>
