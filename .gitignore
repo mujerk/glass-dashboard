@@ -1,0 +1,26 @@
+# Build results
+/backend/build/
+/backend/bin/
+/backend/out/
+/glass-dashboard/dist/
+/glass-dashboard/build/
+node_modules/
+
+# Gradle
+.gradle/
+gradle/wrapper/gradle-wrapper.jar
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# Logs
+*.log
+
+# Secrets
+application.properties
+.env

@@ -1,0 +1,11 @@
+com\example\glassdashboard\controller\TodoController.class
+com\example\glassdashboard\entity\CalendarEvent.class
+com\example\glassdashboard\entity\DiaryEntry.class
+com\example\glassdashboard\config\CorsConfig.class
+com\example\glassdashboard\GlassDashboardApplication.class
+com\example\glassdashboard\repository\TodoRepository.class
+com\example\glassdashboard\controller\DiaryEntryController.class
+com\example\glassdashboard\controller\CalendarEventController.class
+com\example\glassdashboard\entity\Todo.class
+com\example\glassdashboard\repository\CalendarEventRepository.class
+com\example\glassdashboard\repository\DiaryEntryRepository.class

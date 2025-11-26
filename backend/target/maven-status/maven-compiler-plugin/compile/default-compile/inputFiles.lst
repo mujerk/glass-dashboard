@@ -1,0 +1,11 @@
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\entity\Todo.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\repository\DiaryEntryRepository.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\controller\TodoController.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\controller\CalendarEventController.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\controller\DiaryEntryController.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\GlassDashboardApplication.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\repository\CalendarEventRepository.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\repository\TodoRepository.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\config\CorsConfig.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\entity\CalendarEvent.java
+D:\workgemini\java\01_pj\backend\src\main\java\com\example\glassdashboard\entity\DiaryEntry.java
