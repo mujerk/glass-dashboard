@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { Form, Button, Card } from 'react-bootstrap';
+import React, { useState, useRef, useMemo, Suspense } from 'react';
+// import JoditEditor from 'jodit-react'; // Remove static import
+import { Form, Button, Card, Spinner } from 'react-bootstrap';
+
+// Lazy load JoditEditor
+const JoditEditor = React.lazy(() => import('jodit-react'));
 
 const BoardEditor = ({ onSave, onCancel, initialData = { title: '', content: '' } }) => {
+   const editor = useRef(null);
    const [title, setTitle] = useState(initialData.title);
    const [content, setContent] = useState(initialData.content);
+
+   const config = useMemo(() => ({
+      readonly: false,
+      placeholder: 'Start typing...',
+      height: 300,
+      buttons: [
+         'bold', 'italic', 'underline', 'strikethrough', '|',
+         'ul', 'ol', '|',
+         'font', 'fontsize', 'brush', 'paragraph', '|',
+         'image', 'table', 'link', '|',
+         'align', 'undo', 'redo', '|',
+         'hr', 'eraser', 'copyformat', '|',
+         'fullsize', 'selectall', 'print', 'about'
+      ]
+   }), []);
 
    const handleSubmit = (e) => {
       e.preventDefault();
       onSave({ title, content });
    };
-
-   const modules = {
-      toolbar: [
-         [{ 'header': [1, 2, false] }],
-         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-         ['link', 'image'],
-         ['clean']
-      ],
-   };
-
-   const formats = [
-      'header',
-      'bold', 'italic', 'underline', 'strike', 'blockquote',
-      'list', 'bullet', 'indent',
-      'link', 'image'
-   ];
 
    return (
       <Card className="glass-card p-4">
@@ -46,14 +47,16 @@ const BoardEditor = ({ onSave, onCancel, initialData = { title: '', content: '' 
 
             <Form.Group className="mb-3">
                <Form.Label>Content</Form.Label>
-               <ReactQuill
-                  theme="snow"
-                  value={content}
-                  onChange={setContent}
-                  modules={modules}
-                  formats={formats}
-                  style={{ height: '300px', marginBottom: '50px' }}
-               />
+               <Suspense fallback={<Spinner animation="border" />}>
+                  <JoditEditor
+                     ref={editor}
+                     value={content}
+                     config={config}
+                     tabIndex={1} // tabIndex of textarea
+                     onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                     onChange={newContent => { }}
+                  />
+               </Suspense>
             </Form.Group>
 
             <div className="d-flex justify-content-end gap-2 mt-5">
