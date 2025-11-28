@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
    const checkUserLoggedIn = async () => {
       try {
-         const response = await fetch('http://localhost:8080/api/user/me', { credentials: 'include' });
+         const response = await fetch('/api/user/me', { credentials: 'include' });
          if (response.ok) {
             const data = await response.json();
             setUser(data);
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       params.append('username', username);
       params.append('password', password);
 
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
          method: 'POST',
          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
          body: params,
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
    };
 
    const logout = async () => {
-      await fetch('http://localhost:8080/api/auth/logout', { method: 'POST', credentials: 'include' });
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
       setUser(null);
    };
 

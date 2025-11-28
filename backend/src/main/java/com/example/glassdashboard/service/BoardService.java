@@ -2,45 +2,52 @@ package com.example.glassdashboard.service;
 
 import com.example.glassdashboard.entity.Board;
 import com.example.glassdashboard.entity.User;
-import com.example.glassdashboard.repository.BoardRepository;
-import com.example.glassdashboard.repository.UserRepository;
+import com.example.glassdashboard.mapper.BoardMapper;
+import com.example.glassdashboard.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class BoardService {
 
    @Autowired
-   private BoardRepository boardRepository;
+   private BoardMapper boardMapper;
 
    @Autowired
-   private UserRepository userRepository;
+   private UserMapper userMapper;
 
    public Page<Board> getBoards(Pageable pageable) {
-      return boardRepository.findAllByOrderByCreatedAtDesc(pageable);
+      int limit = pageable.getPageSize();
+      long offset = pageable.getOffset();
+      List<Board> content = boardMapper.findAllByOrderByCreatedAtDesc(limit, offset);
+      long total = boardMapper.count();
+      return new PageImpl<>(content, pageable, total);
    }
 
    public Board getBoard(Long id) {
-      Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Board not found"));
+      Board board = boardMapper.findById(id).orElseThrow(() -> new RuntimeException("Board not found"));
       board.setViewCount(board.getViewCount() + 1);
-      return boardRepository.save(board);
+      boardMapper.update(board);
+      return board;
    }
 
    public Board createBoard(Board board, Object principal) {
       User user = getUserFromPrincipal(principal);
       board.setAuthor(user);
-      return boardRepository.save(board);
+      boardMapper.insert(board);
+      return board;
    }
 
    public Board updateBoard(Long id, Board updatedBoard, Object principal) {
-      Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Board not found"));
+      Board board = boardMapper.findById(id).orElseThrow(() -> new RuntimeException("Board not found"));
       User user = getUserFromPrincipal(principal);
 
       if (!board.getAuthor().getId().equals(user.getId())) {
@@ -49,18 +56,19 @@ public class BoardService {
 
       board.setTitle(updatedBoard.getTitle());
       board.setContent(updatedBoard.getContent());
-      return boardRepository.save(board);
+      boardMapper.update(board);
+      return board;
    }
 
    public void deleteBoard(Long id, Object principal) {
-      Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("Board not found"));
+      Board board = boardMapper.findById(id).orElseThrow(() -> new RuntimeException("Board not found"));
       User user = getUserFromPrincipal(principal);
 
       if (!board.getAuthor().getId().equals(user.getId())) {
          throw new RuntimeException("Unauthorized");
       }
 
-      boardRepository.delete(board);
+      boardMapper.delete(id);
    }
 
    private User getUserFromPrincipal(Object principal) {
@@ -72,6 +80,6 @@ public class BoardService {
       } else {
          throw new RuntimeException("Unknown principal type");
       }
-      return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+      return userMapper.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
    }
 }

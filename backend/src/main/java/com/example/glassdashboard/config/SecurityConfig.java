@@ -55,8 +55,8 @@ public class SecurityConfig {
                   .userInfoEndpoint(userInfo -> userInfo
                         .userService(customOAuth2UserService))
                   .successHandler((request, response, authentication) -> {
-                     response.sendRedirect("http://localhost:5173/dashboard"); // Redirect to frontend after Google
-                                                                               // login
+                     response.sendRedirect("https://mydomain.com/dashboard"); // Redirect to frontend after Google
+                                                                              // login
                   }))
             .logout(logout -> logout
                   .logoutUrl("/api/auth/logout")
@@ -86,7 +86,9 @@ public class SecurityConfig {
    @Bean
    public CorsConfigurationSource corsConfigurationSource() {
       CorsConfiguration configuration = new CorsConfiguration();
-      configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+      configuration
+            .setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://mydomain.com", "http://localhost",
+                  "https://localhost:5173", "https://mydomain.com", "https://localhost"));
       configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
       configuration.setAllowedHeaders(Collections.singletonList("*"));
       configuration.setAllowCredentials(true);

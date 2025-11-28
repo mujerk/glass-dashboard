@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.glassdashboard.mapper.TodoMapper">
+
+    <insert id="insert" parameterType="Todo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO todos (text, completed)
+        VALUES (#{text}, #{completed})
+    </insert>
+
+    <update id="update" parameterType="Todo">
+        UPDATE todos
+        SET text = #{text},
+            completed = #{completed}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM todos WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="long" resultType="Todo">
+        SELECT id, text, completed
+        FROM todos
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultType="Todo">
+        SELECT id, text, completed
+        FROM todos
+    </select>
+
+</mapper>

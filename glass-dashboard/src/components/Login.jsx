@@ -41,7 +41,7 @@ const Login = () => {
                   </Button>
                </Form>
                <div className="w-100 text-center mt-3">
-                  <a href="http://localhost:8080/oauth2/authorization/google" className="btn btn-outline-danger w-100">
+                  <a href="/oauth2/authorization/google" className="btn btn-outline-danger w-100">
                      Log In with Google
                   </a>
                </div>

@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const Calendar = () => {
    const [currentDate, setCurrentDate] = useState(new Date());
    const [events, setEvents] = useState([]);
-   const API_URL = 'http://localhost:8080/api/events';
+   const API_URL = '/api/events';
 
    // Selection State
    const [isDragging, setIsDragging] = useState(false);

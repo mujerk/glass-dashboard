@@ -1,7 +1,7 @@
 package com.example.glassdashboard.service;
 
 import com.example.glassdashboard.entity.User;
-import com.example.glassdashboard.repository.UserRepository;
+import com.example.glassdashboard.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -21,7 +21,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
    private static final Logger logger = LoggerFactory.getLogger(CustomOAuth2UserService.class);
 
    @Autowired
-   private UserRepository userRepository;
+   private UserMapper userMapper;
 
    @Override
    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -36,7 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       System.err.println("DEBUG: OAuth2 Login: Provider=" + provider + ", Email=" + email);
 
       // Check if user exists
-      Optional<User> userOptional = userRepository.findByUsername(email);
+      Optional<User> userOptional = userMapper.findByUsername(email);
       User user;
       if (userOptional.isPresent()) {
          user = userOptional.get();
@@ -44,7 +44,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
          user.setName(name);
          user.setProvider(provider.toUpperCase());
          user.setProviderId(providerId);
-         userRepository.save(user);
+         userMapper.update(user);
       } else {
          // Register new user
          user = new User();
@@ -54,7 +54,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
          user.setProviderId(providerId);
          user.setRole("ROLE_USER");
          user.setPassword(""); // No password for OAuth users
-         userRepository.save(user);
+         userMapper.insert(user);
       }
 
       return oAuth2User;

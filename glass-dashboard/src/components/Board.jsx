@@ -14,7 +14,7 @@ const Board = () => {
    const [currentPage, setCurrentPage] = useState(0);
    const [totalPages, setTotalPages] = useState(0);
 
-   const API_URL = 'http://localhost:8080/api/board';
+   const API_URL = '/api/board';
 
    useEffect(() => {
       fetchPosts(currentPage);

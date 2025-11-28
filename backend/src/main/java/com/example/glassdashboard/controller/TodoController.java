@@ -1,7 +1,7 @@
 package com.example.glassdashboard.controller;
 
 import com.example.glassdashboard.entity.Todo;
-import com.example.glassdashboard.repository.TodoRepository;
+import com.example.glassdashboard.mapper.TodoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,29 +12,31 @@ import java.util.List;
 public class TodoController {
 
    @Autowired
-   private TodoRepository todoRepository;
+   private TodoMapper todoMapper;
 
    @GetMapping
    public List<Todo> getAllTodos() {
-      return todoRepository.findAll();
+      return todoMapper.findAll();
    }
 
    @PostMapping
    public Todo createTodo(@RequestBody Todo todo) {
-      return todoRepository.save(todo);
+      todoMapper.insert(todo);
+      return todo;
    }
 
    @PutMapping("/{id}")
    public Todo updateTodo(@PathVariable Long id, @RequestBody Todo todoDetails) {
-      return todoRepository.findById(id).map(todo -> {
+      return todoMapper.findById(id).map(todo -> {
          todo.setText(todoDetails.getText());
          todo.setCompleted(todoDetails.getCompleted());
-         return todoRepository.save(todo);
+         todoMapper.update(todo);
+         return todo;
       }).orElseThrow(() -> new RuntimeException("Todo not found with id " + id));
    }
 
    @DeleteMapping("/{id}")
    public void deleteTodo(@PathVariable Long id) {
-      todoRepository.deleteById(id);
+      todoMapper.delete(id);
    }
 }

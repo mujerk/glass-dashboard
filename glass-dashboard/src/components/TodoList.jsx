@@ -5,7 +5,7 @@ import { Trash2, Check, Plus } from 'lucide-react';
 const TodoList = () => {
    const [todos, setTodos] = useState([]);
    const [input, setInput] = useState('');
-   const API_URL = 'http://localhost:8080/api/todos';
+   const API_URL = '/api/todos';
 
    useEffect(() => {
       fetchTodos();

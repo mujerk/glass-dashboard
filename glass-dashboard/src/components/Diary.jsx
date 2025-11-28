@@ -5,7 +5,7 @@ import { Save, Trash2 } from 'lucide-react';
 const Diary = () => {
    const [entries, setEntries] = useState([]);
    const [content, setContent] = useState('');
-   const API_URL = 'http://localhost:8080/api/diary';
+   const API_URL = '/api/diary';
 
    useEffect(() => {
       fetchEntries();

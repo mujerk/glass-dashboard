@@ -1,7 +1,7 @@
 package com.example.glassdashboard.controller;
 
 import com.example.glassdashboard.entity.DiaryEntry;
-import com.example.glassdashboard.repository.DiaryEntryRepository;
+import com.example.glassdashboard.mapper.DiaryEntryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,20 +12,21 @@ import java.util.List;
 public class DiaryEntryController {
 
    @Autowired
-   private DiaryEntryRepository diaryEntryRepository;
+   private DiaryEntryMapper diaryEntryMapper;
 
    @GetMapping
    public List<DiaryEntry> getAllEntries() {
-      return diaryEntryRepository.findAll();
+      return diaryEntryMapper.findAll();
    }
 
    @PostMapping
    public DiaryEntry createEntry(@RequestBody DiaryEntry entry) {
-      return diaryEntryRepository.save(entry);
+      diaryEntryMapper.insert(entry);
+      return entry;
    }
 
    @DeleteMapping("/{id}")
    public void deleteEntry(@PathVariable Long id) {
-      diaryEntryRepository.deleteById(id);
+      diaryEntryMapper.delete(id);
    }
 }

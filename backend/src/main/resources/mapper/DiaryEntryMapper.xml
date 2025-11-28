@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.glassdashboard.mapper.DiaryEntryMapper">
+
+    <insert id="insert" parameterType="DiaryEntry" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO diary_entries (date, content)
+        VALUES (#{date}, #{content})
+    </insert>
+
+    <update id="update" parameterType="DiaryEntry">
+        UPDATE diary_entries
+        SET date = #{date},
+            content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM diary_entries WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="long" resultType="DiaryEntry">
+        SELECT id, date, content
+        FROM diary_entries
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultType="DiaryEntry">
+        SELECT id, date, content
+        FROM diary_entries
+    </select>
+
+</mapper>

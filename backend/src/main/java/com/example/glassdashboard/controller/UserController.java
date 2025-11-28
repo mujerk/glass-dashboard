@@ -1,7 +1,7 @@
 package com.example.glassdashboard.controller;
 
 import com.example.glassdashboard.entity.User;
-import com.example.glassdashboard.repository.UserRepository;
+import com.example.glassdashboard.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +22,7 @@ public class UserController {
    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
    @Autowired
-   private UserRepository userRepository;
+   private UserMapper userMapper;
 
    @Autowired
    private PasswordEncoder passwordEncoder;
@@ -42,7 +42,7 @@ public class UserController {
       System.err.println("DEBUG: UserController: Principal type = " + principal.getClass().getName());
       System.err.println("DEBUG: UserController: Fetching user with username=" + username);
 
-      return userRepository.findByUsername(username)
+      return userMapper.findByUsername(username)
             .map(user -> {
                user.setPassword(null); // Don't return password
                return ResponseEntity.ok(user);
@@ -61,14 +61,14 @@ public class UserController {
          return ResponseEntity.status(401).build();
       }
 
-      return userRepository.findByUsername(username)
+      return userMapper.findByUsername(username)
             .map(user -> {
                user.setName(userDetails.getName());
                user.setGender(userDetails.getGender());
                if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
                   user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
                }
-               userRepository.save(user);
+               userMapper.update(user);
                return ResponseEntity.ok(Map.of("message", "Profile updated successfully"));
             })
             .orElse(ResponseEntity.notFound().build());
@@ -85,9 +85,9 @@ public class UserController {
          return ResponseEntity.status(401).build();
       }
 
-      return userRepository.findByUsername(username)
+      return userMapper.findByUsername(username)
             .map(user -> {
-               userRepository.delete(user);
+               userMapper.delete(user.getId());
                return ResponseEntity.ok(Map.of("message", "Account deleted successfully"));
             })
             .orElse(ResponseEntity.notFound().build());

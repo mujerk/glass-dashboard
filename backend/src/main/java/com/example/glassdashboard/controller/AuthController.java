@@ -1,7 +1,7 @@
 package com.example.glassdashboard.controller;
 
 import com.example.glassdashboard.entity.User;
-import com.example.glassdashboard.repository.UserRepository;
+import com.example.glassdashboard.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,21 +17,21 @@ import java.util.Map;
 public class AuthController {
 
    @Autowired
-   private UserRepository userRepository;
+   private UserMapper userMapper;
 
    @Autowired
    private PasswordEncoder passwordEncoder;
 
    @PostMapping("/signup")
    public ResponseEntity<?> signup(@RequestBody User user) {
-      if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+      if (userMapper.findByUsername(user.getUsername()).isPresent()) {
          return ResponseEntity.badRequest().body(Map.of("message", "Username already exists"));
       }
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       user.setRole("ROLE_USER");
       user.setProvider("LOCAL");
-      userRepository.save(user);
+      userMapper.insert(user);
 
       return ResponseEntity.ok(Map.of("message", "User registered successfully"));
    }
