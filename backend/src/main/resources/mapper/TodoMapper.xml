@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.glassdashboard.mapper.TodoMapper">
 
-    <insert id="insert" parameterType="Todo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO todos (text, completed)
-        VALUES (#{text}, #{completed})
+    <insert id="insert" parameterType="com.example.glassdashboard.entity.Todo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO todos (text, completed, created_at)
+        VALUES (#{text}, #{completed}, #{createdAt})
     </insert>
 
-    <update id="update" parameterType="Todo">
+    <update id="update" parameterType="com.example.glassdashboard.entity.Todo">
         UPDATE todos
         SET text = #{text},
-            completed = #{completed}
+        completed = #{completed}
         WHERE id = #{id}
     </update>
 
@@ -18,15 +18,21 @@
         DELETE FROM todos WHERE id = #{id}
     </delete>
 
-    <select id="findById" parameterType="long" resultType="Todo">
-        SELECT id, text, completed
+    <select id="findById" parameterType="long" resultType="com.example.glassdashboard.entity.Todo">
+        SELECT id, text, completed, created_at as createdAt
         FROM todos
         WHERE id = #{id}
     </select>
 
-    <select id="findAll" resultType="Todo">
-        SELECT id, text, completed
+    <select id="findAll" resultType="com.example.glassdashboard.entity.Todo">
+        SELECT id, text, completed, created_at as createdAt
         FROM todos
+    </select>
+
+    <select id="countRecent" resultType="int">
+        SELECT COUNT(*)
+        FROM todos
+        WHERE created_at > #{since}
     </select>
 
 </mapper>

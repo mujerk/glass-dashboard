@@ -19,4 +19,6 @@ public interface BoardMapper {
    List<Board> findAllByOrderByCreatedAtDesc(@Param("limit") int limit, @Param("offset") long offset);
 
    long count();
+
+   int countRecent(java.time.LocalDateTime since);
 }

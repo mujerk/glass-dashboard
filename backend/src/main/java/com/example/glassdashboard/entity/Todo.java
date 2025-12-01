@@ -10,4 +10,6 @@ public class Todo {
    private String text;
 
    private Boolean completed;
+
+   private java.time.LocalDateTime createdAt;
 }

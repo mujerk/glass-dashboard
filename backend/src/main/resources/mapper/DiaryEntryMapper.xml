@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.glassdashboard.mapper.DiaryEntryMapper">
 
-    <insert id="insert" parameterType="DiaryEntry" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.example.glassdashboard.entity.DiaryEntry" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO diary_entries (date, content)
         VALUES (#{date}, #{content})
     </insert>
 
-    <update id="update" parameterType="DiaryEntry">
+    <update id="update" parameterType="com.example.glassdashboard.entity.DiaryEntry">
         UPDATE diary_entries
         SET date = #{date},
-            content = #{content}
+        content = #{content}
         WHERE id = #{id}
     </update>
 
@@ -18,15 +18,21 @@
         DELETE FROM diary_entries WHERE id = #{id}
     </delete>
 
-    <select id="findById" parameterType="long" resultType="DiaryEntry">
+    <select id="findById" parameterType="long" resultType="com.example.glassdashboard.entity.DiaryEntry">
         SELECT id, date, content
         FROM diary_entries
         WHERE id = #{id}
     </select>
 
-    <select id="findAll" resultType="DiaryEntry">
+    <select id="findAll" resultType="com.example.glassdashboard.entity.DiaryEntry">
         SELECT id, date, content
         FROM diary_entries
+    </select>
+
+    <select id="countRecent" resultType="int">
+        SELECT COUNT(*)
+        FROM diary_entries
+        WHERE date > #{since}
     </select>
 
 </mapper>

@@ -16,4 +16,6 @@ public interface TodoMapper {
    Optional<Todo> findById(Long id);
 
    List<Todo> findAll();
+
+   int countRecent(java.time.LocalDateTime since);
 }

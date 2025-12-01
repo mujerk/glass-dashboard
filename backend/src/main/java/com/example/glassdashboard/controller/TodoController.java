@@ -3,6 +3,7 @@ package com.example.glassdashboard.controller;
 import com.example.glassdashboard.entity.Todo;
 import com.example.glassdashboard.mapper.TodoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class TodoController {
 
    @PostMapping
    public Todo createTodo(@RequestBody Todo todo) {
+      todo.setCreatedAt(java.time.LocalDateTime.now());
       todoMapper.insert(todo);
       return todo;
    }

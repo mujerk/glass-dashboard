@@ -16,4 +16,6 @@ public interface DiaryEntryMapper {
    Optional<DiaryEntry> findById(Long id);
 
    List<DiaryEntry> findAll();
+
+   int countRecent(java.time.LocalDateTime since);
 }

@@ -9,13 +9,36 @@ import org.springframework.context.annotation.Configuration;
 public class DatabaseInspector {
 
    @Bean
-   public CommandLineRunner inspect(UserMapper userMapper) {
+   public CommandLineRunner inspect(org.springframework.jdbc.core.JdbcTemplate jdbcTemplate) {
       return args -> {
-         System.err.println("DEBUG: --- Database Users ---");
-         userMapper.findAll().forEach(user -> {
-            System.err.println("DEBUG: User: " + user.getUsername() + " / " + user.getProvider());
-         });
-         System.err.println("DEBUG: -----------------------");
+         try {
+            jdbcTemplate.execute("ALTER TABLE todos ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
+            System.err.println("DEBUG: Added created_at column to todos table.");
+         } catch (Exception e) {
+            System.err.println("DEBUG: created_at column already exists in todos table or error: " + e.getMessage());
+         }
+
+         try {
+            jdbcTemplate.execute("ALTER TABLE boards ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
+            System.err.println("DEBUG: Added created_at column to boards table.");
+         } catch (Exception e) {
+            // Ignore if exists
+         }
+
+         try {
+            jdbcTemplate.execute("ALTER TABLE boards ADD COLUMN view_count INT DEFAULT 0");
+            System.err.println("DEBUG: Added view_count column to boards table.");
+         } catch (Exception e) {
+            // Ignore if exists
+         }
+
+         try {
+            jdbcTemplate.execute("ALTER TABLE diary_entries ADD COLUMN date TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
+            System.err.println("DEBUG: Added date column to diary_entries table.");
+         } catch (Exception e) {
+            // Ignore if exists
+         }
+
       };
    }
 }

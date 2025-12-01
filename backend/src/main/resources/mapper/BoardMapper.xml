@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.glassdashboard.mapper.BoardMapper">
 
-    <resultMap id="BoardResultMap" type="Board">
+    <resultMap id="BoardResultMap" type="com.example.glassdashboard.entity.Board">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="content" column="content"/>
         <result property="createdAt" column="created_at"/>
         <result property="viewCount" column="view_count"/>
-        <association property="author" javaType="User">
+        <association property="author" javaType="com.example.glassdashboard.entity.User">
             <id property="id" column="user_id"/>
             <result property="username" column="username"/>
             <result property="name" column="name"/>
@@ -16,16 +16,16 @@
         </association>
     </resultMap>
 
-    <insert id="insert" parameterType="Board" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.example.glassdashboard.entity.Board" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO boards (title, content, user_id, created_at, view_count)
         VALUES (#{title}, #{content}, #{author.id}, NOW(), #{viewCount})
     </insert>
 
-    <update id="update" parameterType="Board">
+    <update id="update" parameterType="com.example.glassdashboard.entity.Board">
         UPDATE boards
         SET title = #{title},
-            content = #{content},
-            view_count = #{viewCount}
+        content = #{content},
+        view_count = #{viewCount}
         WHERE id = #{id}
     </update>
 
@@ -52,6 +52,12 @@
 
     <select id="count" resultType="long">
         SELECT COUNT(*) FROM boards
+    </select>
+
+    <select id="countRecent" resultType="int">
+        SELECT COUNT(*)
+        FROM boards
+        WHERE created_at > #{since}
     </select>
 
 </mapper>

@@ -55,8 +55,7 @@ public class SecurityConfig {
                   .userInfoEndpoint(userInfo -> userInfo
                         .userService(customOAuth2UserService))
                   .successHandler((request, response, authentication) -> {
-                     response.sendRedirect("https://mydomain.com/dashboard"); // Redirect to frontend after Google
-                                                                              // login
+                     response.sendRedirect("https://mydomain.com/dashboard"); // Redirect to frontend after Google login
                   }))
             .logout(logout -> logout
                   .logoutUrl("/api/auth/logout")
